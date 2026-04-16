@@ -1,0 +1,4 @@
+google-genai
+textual
+PyPDF2
+python-docx
