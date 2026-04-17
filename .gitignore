@@ -1,4 +1,38 @@
-__pycache__/
-.venv/
+# Build and runtime artifacts
+src/build/
+src/_runtime/
+TitanEngine/
+TitanEngine.exe
+_runtime/
 .tmp/
+
+# Python cache
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment files
+.env
+.tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.lnk
