@@ -36,10 +36,8 @@ from titanengine.scheduler import generate_smart_schedule, normalize_schedule_an
 
 
 WEB_ROOT = BASE_DIR.parent
-UPLOAD_DIR = WEB_ROOT / "uploads"
 EXPORT_DIR = WEB_ROOT / "exports"
 DATABASE_DIR = WEB_ROOT / "database"
-LOG_DIR = WEB_ROOT / "logs"
 DATABASE_FILE = DATABASE_DIR / "titan_engine.db"
 ALLOWED_UPLOAD_EXTENSIONS = {
     ".pdf",
@@ -48,16 +46,11 @@ ALLOWED_UPLOAD_EXTENSIONS = {
     ".md",
     ".markdown",
     ".csv",
-    ".pptx",
-    ".png",
-    ".jpg",
-    ".jpeg",
-    ".webp",
 }
 
 
 def ensure_web_directories():
-    for directory in (BASE_DIR, UPLOAD_DIR, EXPORT_DIR, DATABASE_DIR, LOG_DIR):
+    for directory in (BASE_DIR, EXPORT_DIR, DATABASE_DIR):
         directory.mkdir(parents=True, exist_ok=True)
 
 
@@ -114,18 +107,6 @@ def init_database():
                 question_type TEXT,
                 content TEXT,
                 created_at TEXT
-            )
-            """
-        )
-        conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS questions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                quiz_id INTEGER,
-                question TEXT,
-                choices TEXT,
-                correct_answer TEXT,
-                explanation TEXT
             )
             """
         )

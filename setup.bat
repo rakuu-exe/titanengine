@@ -30,7 +30,7 @@ if errorlevel 1 (
 )
 
 echo [*] Upgrading pip...
-python -m pip install --upgrade pip >nul 2>nul
+python -m pip install --upgrade pip
 if errorlevel 1 (
     echo [!] Pip upgrade failed.
     pause
@@ -38,7 +38,7 @@ if errorlevel 1 (
 )
 
 echo [*] Building Titan Engine...
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0src\build_exe.ps1" >nul 2>nul
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0src\build_exe.ps1"
 if errorlevel 1 (
     echo [!] Build failed.
     pause
@@ -46,7 +46,7 @@ if errorlevel 1 (
 )
 
 echo [*] Installing Titan Engine...
-powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0src\install_shortcut.ps1" >nul 2>nul
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0src\install_shortcut.ps1"
 if errorlevel 1 (
     echo [!] Installation failed.
     pause
@@ -57,6 +57,7 @@ echo.
 echo ========================================
 echo [+] Setup complete!
 echo [+] Open "Titan Engine" from Desktop
+echo [+] Or run TitanEngine.exe from this folder
 echo ========================================
 echo.
 pause

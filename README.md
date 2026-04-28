@@ -1,184 +1,50 @@
 # Titan Study Engine
 
-Titan Study Engine is a local study helper. It starts a Flask web app on `http://127.0.0.1:5000`, opens it in your browser, reads school files, creates notes and quizzes, exports PDFs, and builds an AI-reviewed study schedule.
+Titan Study Engine is a local Windows study helper. It starts a Flask app on `http://127.0.0.1:5000`, opens it in your browser, reads school files, creates notes and quizzes, exports PDFs, and builds study schedules.
 
-It is made for a simple folder setup like this:
+## Student Files
 
-```text
-Desktop
-`-- School
-    `-- MAJANDUS
-        |-- Source_Materials
-        |-- Revision
-        |-- Quizzes
-        |-- Schedules
-        `-- System
-```
-
-## Repository Structure
+For normal use, students only need these files:
 
 ```text
-TitanEngine/
-├── setup.bat               ← Run this to install
-├── uninstall.bat           ← Run this to uninstall
-├── README.md
-├── LICENSE
-├── .gitignore
-├── src/                    ← All source code & build configuration
-│   ├── main.py
-│   ├── titanengine/
-│   ├── tests/
-│   ├── build_exe.ps1
-│   ├── install_shortcut.ps1
-│   ├── TitanEngine.spec
-│   ├── requirements.txt
-│   └── requirements-build.txt
-└── TitanEngine/            ← App folder with dependencies (created by build)
-    ├── TitanEngine.exe     ← Your executable
-    ├── _internal/ (dependencies)
-    └── (other files)
+setup.bat
+uninstall.bat
+TitanEngine.exe
 ```
 
-## Easy Setup For Students
+`TitanEngine.exe` is created by `setup.bat`.
 
-Use this on a fresh Windows computer:
+When the exe is built from source, Windows may also have a hidden `_internal` runtime folder beside it. Leave that folder in place; it is hidden because students normally do not need to touch it.
 
-1. Double-click `setup_titan_engine.bat`
+## Install
 
-The setup will:
+1. Double-click `setup.bat`.
+2. Wait for the build and install to finish.
+3. Open `Titan Engine` from the Desktop, or run `TitanEngine.exe` from this folder.
 
-1. Check that Python is installed.
-2. Install the needed Python packages.
-3. Build the Titan Engine app.
-4. Copy the app to a hidden folder in your user account.
-5. Create a Desktop shortcut named `Titan Engine`.
-
-After setup, students only need to open:
+The installer copies the real app to:
 
 ```text
-Titan Engine
+%LOCALAPPDATA%\TitanEngineApp\app
 ```
 
-from the Desktop.
-
-The desktop app starts a local server and opens the browser UI automatically. For a source checkout, you can also double-click `run_titan_engine.bat`.
+That install folder is hidden so students do not have to manage app internals.
 
 ## Uninstall
 
-To completely remove Titan Engine:
-
-1. Double-click `uninstall.bat`
-
-This will remove:
-
-- The Desktop shortcut named `Titan Engine`
-- The app installation folder and all its files
-
-## If Python Is Missing
-
-If setup says Python was not found:
-
-1. Go to https://www.python.org/downloads/
-2. Install Python 3.12 or newer.
-3. Important: tick `Add python.exe to PATH` during installation.
-4. Run `setup_titan_engine.bat` again.
-
-## Where The App Is Installed
-
-The setup copies the app to a hidden folder under:
+Double-click:
 
 ```text
-%LOCALAPPDATA%\TitanEngineApp
+uninstall.bat
 ```
 
-That folder is hidden so normal users do not need to touch it. The Desktop shortcut is the clean way to open the app.
+This removes the Desktop shortcut and the hidden install folder.
 
-## First-Time App Setup
+## Development
 
-1. Open Titan Engine from the Desktop shortcut.
-2. Click `Settings`.
-3. Paste your Gemini API key.
-4. Choose a model. `Gemini 2.5 Flash` is a good default.
-5. Click `Save & Apply`.
+Source code lives under `src/`.
 
-You can get a Gemini API key from Google AI Studio.
-
-## Create A Subject
-
-1. Click `New Subject`.
-2. Enter the subject name, for example `MAJANDUS`.
-3. Enter the subject begin date in this format:
-
-```text
-YYYY-MM-DD
-```
-
-Example:
-
-```text
-2026-02-02
-```
-
-4. If you know the exam date, enter it too. If not, leave it empty.
-5. Enter weekly study hours, for example `4`.
-6. Click `Create Subject`.
-
-The subject begin date is important because the scheduler converts course weeks into real calendar dates.
-
-## Add School Files
-
-1. Put your files somewhere easy to find.
-2. In Titan Engine, select your subject folder.
-3. Select a PDF, DOCX, Markdown, text, or CSV file.
-4. Click `Import Material`.
-
-Supported files:
-
-- PDF
-- DOCX
-- Markdown
-- TXT
-- CSV
-
-The scheduler can understand English, Estonian, Russian, or mixed language files.
-
-## Make Notes Or Quizzes
-
-1. Select a source file inside `Source_Materials`.
-2. Click `Generate Notes` or `Generate Quiz`.
-3. Wait for the draft.
-4. Review the text.
-5. Click `Save`.
-
-Saved outputs are PDF files:
-
-- Notes go to `Revision`
-- Quizzes go to `Quizzes`
-- Schedules go to `Schedules`
-
-## Build A Smart Schedule
-
-1. Select the subject folder.
-2. Click `Build Schedule`.
-3. Titan Engine asks Gemini to detect:
-   - tests
-   - exams
-   - projects
-   - deadlines
-   - lectures or attendance events
-   - which files belong to which course weeks
-4. Review the detected events.
-5. Click `Accept & Build Schedule`.
-6. Review the schedule draft.
-7. Click `Save` to export it as a PDF.
-
-Example: if a test is in week 8, Titan Engine prepares weeks 1-8. If another test is in week 15, it prepares the later weeks instead of only repeating old material.
-
-## Manual Build Commands
-
-Most students should use `setup_titan_engine.bat`.
-
-For development, navigate to the `src/` folder first:
+Run from source:
 
 ```powershell
 cd src
@@ -186,48 +52,28 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
-The legacy terminal interface is still available for development:
+Build the exe manually:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\src\build_exe.ps1
+```
+
+Install the Desktop shortcut manually:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\src\install_shortcut.ps1
+```
+
+Run tests:
 
 ```powershell
 cd src
-python main.py --tui
-```
-
-To rebuild the Windows app manually:
-
-```powershell
-cd src
-powershell -NoProfile -ExecutionPolicy Bypass -File .\build_exe.ps1
-```
-
-To install or refresh the Desktop shortcut manually:
-
-```powershell
-cd src
-powershell -NoProfile -ExecutionPolicy Bypass -File .\install_shortcut.ps1
-```
-
-The verified app build is at:
-
-```text
-TitanEngine\TitanEngine.exe
-```
-
-Note: PyInstaller one-file mode failed on this machine because Windows blocked temporary extraction. The folder build was tested and works.
-
-## If Something Does Not Work
-
-- If the app says the API key is missing, open `Settings` and paste the Gemini key again.
-- If a PDF gives bad results, it may be a scanned image PDF. Those need OCR support, which is not included yet.
-- If the schedule looks wrong, cancel at the review step and try again after adding clearer source files.
-- If setup fails, run `setup_titan_engine.bat` again and read the message shown before the window closes.
-
-## Developer Checks
-
-From the `src/` folder:
-
-```powershell
-cd src
-python -m py_compile main.py titanengine\app.py titanengine\web_app.py titanengine\scheduler.py titanengine\pdf_export.py tests\test_scheduler.py
 python -m unittest discover
 ```
+
+## Notes
+
+- The packaged exe is web-only and leaves out the old terminal UI to keep the app smaller.
+- The web UI uses lazy in-page navigation so most clicks and forms do not trigger a full browser refresh.
+- Files and generated data are stored locally.
+- Online AI is only used when an API key is configured in Settings.

@@ -1,5 +1,5 @@
 google-genai
 Flask
-textual
 PyPDF2
 python-docx
+pyinstaller

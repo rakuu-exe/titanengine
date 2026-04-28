@@ -4,6 +4,7 @@ src/dist/
 src/_runtime/
 /TitanEngine/
 TitanEngine.exe
+_internal/
 _runtime/
 .tmp/
 School/

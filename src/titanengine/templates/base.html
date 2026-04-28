@@ -3,23 +3,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Titan Study Engine{% endblock %}</title>
+    <meta name="theme-color" content="#050505">
+    <title>{% block title %}Titan Engine{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-    <div class="backdrop" aria-hidden="true">
-        <video autoplay muted loop playsinline poster="{{ url_for('static', filename='titan-backdrop.svg') }}"></video>
+<body data-current-path="{{ request.path }}">
+    <div class="video-background" aria-hidden="true">
+        <video id="appBackgroundVideo" autoplay muted loop playsinline preload="auto" disablepictureinpicture>
+            <source src="{{ url_for('static', filename='videos/noire_night_v2.mp4') }}" type="video/mp4">
+        </video>
     </div>
+    <div class="video-overlay" aria-hidden="true"></div>
     <div class="page-shell">
         <header class="topbar">
             <a class="brand" href="{{ url_for('dashboard') }}">
                 <span class="brand-mark">T</span>
                 <span>
-                    <strong>Titan Study Engine</strong>
-                    <small>Local AI-powered study command center</small>
+                    <strong>Titan Engine</strong>
                 </span>
             </a>
-            <nav class="nav">
+            <nav class="nav" aria-label="Primary navigation">
                 <a href="{{ url_for('dashboard') }}">Dashboard</a>
                 <a href="{{ url_for('library') }}">Library</a>
                 <a href="{{ url_for('notes') }}">Notes</a>
@@ -40,10 +43,10 @@
             {% endif %}
         {% endwith %}
 
-        <main>
+        <main id="app-root" tabindex="-1">
             {% block content %}{% endblock %}
         </main>
     </div>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>
