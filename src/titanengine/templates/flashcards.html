@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Flashcards - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Flashcards</p>
+    <h1>Turn saved notes into quick revision cards.</h1>
+</section>
+
+<section class="card">
+    <form class="toolbar-form" action="{{ url_for('flashcards') }}" method="get">
+        <label>Source notes
+            <select name="note_id">
+                {% for note in notes %}
+                    <option value="{{ note.id }}" {% if active_note and active_note.id == note.id %}selected{% endif %}>{{ note.title }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <button class="button primary" type="submit">Build Cards</button>
+    </form>
+</section>
+
+<section class="card-grid">
+    {% for card in cards %}
+        <article class="flip-card" tabindex="0">
+            <div class="flip-inner">
+                <div class="flip-face">
+                    <span class="pill">{{ card.level }}</span>
+                    <strong>{{ card.front }}</strong>
+                </div>
+                <div class="flip-face back">
+                    {{ card.back }}
+                </div>
+            </div>
+        </article>
+    {% else %}
+        <article class="card">No flashcards yet. Generate notes first, then choose them here.</article>
+    {% endfor %}
+</section>
+{% endblock %}

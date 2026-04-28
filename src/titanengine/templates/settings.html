@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Settings - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Settings</p>
+    <h1>Configure local storage, AI, exports, and privacy.</h1>
+</section>
+
+<section class="two-column">
+    <article class="card">
+        <form class="form-grid" action="{{ url_for('settings') }}" method="post">
+            <label>AI API key <input name="api_key" type="password" value="{{ config.api_key }}"></label>
+            <label>AI provider
+                <select name="ai_provider">
+                    <option value="gemini" selected>Gemini</option>
+                </select>
+            </label>
+            <label>Default model
+                <select name="ai_model">
+                    {% for label, value in models %}
+                        <option value="{{ value }}" {% if value == config.ai_model %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Default output length
+                <select name="output_length">
+                    <option value="concise" {% if config.output_length == "concise" %}selected{% endif %}>Concise</option>
+                    <option value="balanced" {% if config.output_length == "balanced" %}selected{% endif %}>Balanced</option>
+                    <option value="detailed" {% if config.output_length == "detailed" %}selected{% endif %}>Detailed</option>
+                </select>
+            </label>
+            <label>Quiz difficulty
+                <select name="quiz_difficulty">
+                    <option value="easy" {% if config.quiz_difficulty == "easy" %}selected{% endif %}>Easy</option>
+                    <option value="medium" {% if config.quiz_difficulty == "medium" %}selected{% endif %}>Medium</option>
+                    <option value="hard" {% if config.quiz_difficulty == "hard" %}selected{% endif %}>Hard</option>
+                </select>
+            </label>
+            <label>Schedule preferences <input name="schedule_preferences" value="{{ config.schedule_preferences }}"></label>
+            <label>Output language <input name="output_language" value="{{ config.output_language }}"></label>
+            <button class="button primary" type="submit">Save Settings</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Privacy</p><h2>Local Paths</h2></div>
+        <dl class="meta-list">
+            <div><dt>School files</dt><dd>{{ base_dir }}</dd></div>
+            <div><dt>Exports</dt><dd>{{ export_dir }}</dd></div>
+            <div><dt>Config</dt><dd>{{ config_file }}</dd></div>
+        </dl>
+        <p class="muted">Files stay on this computer. Online AI processing only happens when an API key is configured and you generate AI notes, quizzes, or schedule analysis.</p>
+    </article>
+</section>
+{% endblock %}

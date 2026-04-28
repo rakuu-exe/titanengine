@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Private local study workspace</p>
+    <h1>Turn your school files into notes, quizzes, PDFs, and AI-reviewed study plans.</h1>
+    <div class="hero-actions">
+        <a class="button primary" href="{{ url_for('library') }}">Upload Files</a>
+        <a class="button" href="{{ url_for('notes') }}">Generate Notes</a>
+        <a class="button" href="{{ url_for('quizzes') }}">Create Quiz</a>
+        <a class="button" href="{{ url_for('schedules') }}">Build Schedule</a>
+    </div>
+</section>
+
+<section class="stat-grid">
+    <article class="card stat"><span>{{ counts.files }}</span><strong>Files</strong></article>
+    <article class="card stat"><span>{{ counts.notes }}</span><strong>Notes</strong></article>
+    <article class="card stat"><span>{{ counts.quizzes }}</span><strong>Quizzes</strong></article>
+    <article class="card stat"><span>{{ counts.schedules }}</span><strong>Schedules</strong></article>
+</section>
+
+<section class="two-column">
+    <article class="card">
+        <div class="section-title">
+            <p class="eyebrow">Workspace</p>
+            <h2>Create Subject</h2>
+        </div>
+        <form class="form-grid" action="{{ url_for('create_subject') }}" method="post">
+            <label>Subject name <input name="subject_name" placeholder="Biology, Math, History" required></label>
+            <label>Begin date <input name="subject_start_date" type="date" value="{{ now.date().isoformat() }}"></label>
+            <label>Exam date <input name="exam_date" type="date"></label>
+            <label>Weekly hours <input name="weekly_hours" type="number" min="1" max="40" value="4"></label>
+            <button class="button primary" type="submit">Create Subject</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <div class="section-title">
+            <p class="eyebrow">Storage</p>
+            <h2>Local Data</h2>
+        </div>
+        <dl class="meta-list">
+            <div><dt>School folder</dt><dd>{{ base_dir }}</dd></div>
+            <div><dt>AI provider</dt><dd>{{ config.ai_provider|default("gemini") }}</dd></div>
+            <div><dt>API key</dt><dd>{% if config.api_key %}Configured{% else %}Not configured{% endif %}</dd></div>
+        </dl>
+    </article>
+</section>
+
+<section class="three-column">
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Recent</p><h2>Files</h2></div>
+        <ul class="compact-list">
+            {% for file in recent_files %}
+                <li><a href="{{ url_for('library', subject=file.subject) }}">{{ file.original_filename }}</a><span>{{ file.subject }}</span></li>
+            {% else %}
+                <li>No uploads yet<span>Start in Library</span></li>
+            {% endfor %}
+        </ul>
+    </article>
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Recent</p><h2>Notes</h2></div>
+        <ul class="compact-list">
+            {% for note in recent_notes %}
+                <li><a href="{{ url_for('note_detail', note_id=note.id) }}">{{ note.title }}</a><span>{{ note.created_at }}</span></li>
+            {% else %}
+                <li>No notes yet<span>Generate from files</span></li>
+            {% endfor %}
+        </ul>
+    </article>
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Recent</p><h2>Plans</h2></div>
+        <ul class="compact-list">
+            {% for schedule in recent_schedules %}
+                <li><a href="{{ url_for('schedule_detail', schedule_id=schedule.id) }}">{{ schedule.title }}</a><span>{{ schedule.created_at }}</span></li>
+            {% else %}
+                <li>No schedules yet<span>Add a subject and files</span></li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+{% endblock %}

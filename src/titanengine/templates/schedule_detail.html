@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ schedule.title }} - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Study Schedule</p>
+    <h1>{{ schedule.title }}</h1>
+</section>
+
+<section class="card">
+    <p class="review-note">{{ schedule.ai_review }}</p>
+    <table>
+        <thead><tr><th>Date</th><th>Duration</th><th>Task</th><th>Status</th></tr></thead>
+        <tbody>
+            {% for item in plan %}
+                <tr>
+                    <td>{{ item.due_date }}</td>
+                    <td>{% if item.duration_minutes %}{{ item.duration_minutes }} min{% else %}Reminder{% endif %}</td>
+                    <td>{{ item.task }}</td>
+                    <td><span class="pill">{{ item.status }}</span></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">No schedule items generated.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <details>
+        <summary>Markdown export preview</summary>
+        <pre class="markdown-output">{{ markdown }}</pre>
+    </details>
+    <form action="{{ url_for('export_pdf') }}" method="post">
+        <input type="hidden" name="type" value="schedule">
+        <input type="hidden" name="id" value="{{ schedule.id }}">
+        <button class="button primary" type="submit">Export PDF</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ quiz.title }} - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Quiz</p>
+    <h1>{{ quiz.title }}</h1>
+</section>
+
+<section class="card">
+    <div class="quiz-meta">
+        <span class="pill">{{ quiz.difficulty }}</span>
+        <span class="pill">{{ quiz.question_type }}</span>
+    </div>
+    <pre class="markdown-output">{{ quiz.content }}</pre>
+    <form action="{{ url_for('export_pdf') }}" method="post">
+        <input type="hidden" name="type" value="quiz">
+        <input type="hidden" name="id" value="{{ quiz.id }}">
+        <button class="button primary" type="submit">Export PDF</button>
+    </form>
+</section>
+{% endblock %}

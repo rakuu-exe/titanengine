@@ -1,6 +1,6 @@
-# Titan Engine
+# Titan Study Engine
 
-Titan Engine is a local study helper. It can read school files, create notes and quizzes, export PDFs, and build an AI-reviewed study schedule.
+Titan Study Engine is a local study helper. It starts a Flask web app on `http://127.0.0.1:5000`, opens it in your browser, reads school files, creates notes and quizzes, exports PDFs, and builds an AI-reviewed study schedule.
 
 It is made for a simple folder setup like this:
 
@@ -60,6 +60,8 @@ Titan Engine
 ```
 
 from the Desktop.
+
+The desktop app starts a local server and opens the browser UI automatically. For a source checkout, you can also double-click `run_titan_engine.bat`.
 
 ## Uninstall
 
@@ -184,6 +186,13 @@ python -m pip install -r requirements.txt
 python main.py
 ```
 
+The legacy terminal interface is still available for development:
+
+```powershell
+cd src
+python main.py --tui
+```
+
 To rebuild the Windows app manually:
 
 ```powershell
@@ -219,6 +228,6 @@ From the `src/` folder:
 
 ```powershell
 cd src
-python -m py_compile main.py titanengine\app.py titanengine\scheduler.py titanengine\pdf_export.py tests\test_scheduler.py
+python -m py_compile main.py titanengine\app.py titanengine\web_app.py titanengine\scheduler.py titanengine\pdf_export.py tests\test_scheduler.py
 python -m unittest discover
 ```

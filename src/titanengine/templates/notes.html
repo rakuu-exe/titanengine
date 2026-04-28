@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}AI Notes - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">AI Notes Generator</p>
+    <h1>Convert source files into editable revision notes.</h1>
+</section>
+
+<section class="two-column">
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Generate</p><h2>New Notes</h2></div>
+        <form class="form-grid" action="{{ url_for('generate_notes_route') }}" method="post">
+            <label>Title <input name="title" placeholder="Chapter 4 revision notes"></label>
+            <label>Note style
+                <select name="note_type">
+                    <option value="short_summary">Short summary</option>
+                    <option value="detailed" selected>Detailed notes</option>
+                    <option value="bullet_revision">Bullet-point revision</option>
+                    <option value="exam_focused">Exam-focused notes</option>
+                    <option value="simple_explanation">Simple explanation</option>
+                </select>
+            </label>
+            <div class="checkbox-list">
+                {% for file in files %}
+                    <label><input type="checkbox" name="file_ids" value="{{ file.id }}"> {{ file.original_filename }} <span>{{ file.subject }}</span></label>
+                {% else %}
+                    <p>No files available. Upload material in Library first.</p>
+                {% endfor %}
+            </div>
+            <button class="button primary" type="submit">Generate Notes</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Saved</p><h2>Recent Notes</h2></div>
+        <ul class="compact-list">
+            {% for note in notes %}
+                <li><a href="{{ url_for('note_detail', note_id=note.id) }}">{{ note.title }}</a><span>{{ note.note_type }}</span></li>
+            {% else %}
+                <li>No notes generated yet<span>Choose files to begin</span></li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+{% endblock %}

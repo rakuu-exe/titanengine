@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ note.title }} - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Study Notes</p>
+    <h1>{{ note.title }}</h1>
+</section>
+
+<section class="card editor-card">
+    <form action="{{ url_for('update_note', note_id=note.id) }}" method="post">
+        <label>Title <input name="title" value="{{ note.title }}"></label>
+        <textarea name="content" rows="24">{{ note.content }}</textarea>
+        <div class="button-row">
+            <button class="button primary" type="submit">Save Changes</button>
+            <button class="button" form="exportNote" type="submit">Export PDF</button>
+        </div>
+    </form>
+    <form id="exportNote" action="{{ url_for('export_pdf') }}" method="post">
+        <input type="hidden" name="type" value="notes">
+        <input type="hidden" name="id" value="{{ note.id }}">
+    </form>
+</section>
+{% endblock %}

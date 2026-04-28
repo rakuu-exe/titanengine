@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Study Schedule - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Study Schedule Builder</p>
+    <h1>Build a study plan from subject files and exam timing.</h1>
+</section>
+
+<section class="two-column">
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Plan</p><h2>New Schedule</h2></div>
+        <form class="form-grid" action="{{ url_for('generate_schedule_route') }}" method="post">
+            <label>Subject
+                <select name="subject" required>
+                    {% for subject in subjects %}
+                        <option value="{{ subject }}">{{ subject }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Subject begin date <input name="subject_start_date" type="date" value="{{ now.date().isoformat() }}"></label>
+            <label>Exam date <input name="exam_date" type="date"></label>
+            <label>Study time per day <input name="minutes_per_day" type="number" min="20" max="240" value="45"></label>
+            <label>Difficulty level
+                <select name="confidence_level">
+                    <option value="high">High confidence</option>
+                    <option value="medium" selected>Medium confidence</option>
+                    <option value="low">Low confidence</option>
+                </select>
+            </label>
+            <div class="checkbox-list compact">
+                {% for day in ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] %}
+                    <label><input type="checkbox" name="study_days" value="{{ day }}" {% if day in ["Mon", "Wed", "Sat"] %}checked{% endif %}> {{ day }}</label>
+                {% endfor %}
+            </div>
+            <button class="button primary" type="submit">Build Schedule</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Saved</p><h2>Recent Schedules</h2></div>
+        <ul class="compact-list">
+            {% for schedule in schedules %}
+                <li><a href="{{ url_for('schedule_detail', schedule_id=schedule.id) }}">{{ schedule.title }}</a><span>{{ schedule.created_at }}</span></li>
+            {% else %}
+                <li>No schedules yet<span>Upload files first</span></li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+{% endblock %}

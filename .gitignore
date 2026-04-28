@@ -1,10 +1,21 @@
 # Build and runtime artifacts
 src/build/
+src/dist/
 src/_runtime/
-TitanEngine/
+/TitanEngine/
 TitanEngine.exe
 _runtime/
 .tmp/
+School/
+src/School/
+uploads/
+exports/
+database/
+logs/
+src/uploads/
+src/exports/
+src/database/
+src/logs/
 
 # Python cache
 __pycache__/

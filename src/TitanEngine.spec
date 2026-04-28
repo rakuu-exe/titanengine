@@ -5,7 +5,10 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[
+        ('titanengine/templates', 'titanengine/templates'),
+        ('titanengine/static', 'titanengine/static'),
+    ],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

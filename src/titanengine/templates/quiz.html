@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Quiz Builder - Titan Study Engine{% endblock %}
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">Quiz Builder</p>
+    <h1>Create answer-keyed quizzes from your files.</h1>
+</section>
+
+<section class="two-column">
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Generate</p><h2>New Quiz</h2></div>
+        <form class="form-grid" action="{{ url_for('generate_quiz_route') }}" method="post">
+            <label>Title <input name="title" placeholder="Midterm practice quiz"></label>
+            <label>Source file
+                <select name="file_id" required>
+                    {% for file in files %}
+                        <option value="{{ file.id }}">{{ file.subject }} - {{ file.original_filename }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Difficulty
+                <select name="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </label>
+            <label>Question type
+                <select name="question_type">
+                    <option value="mixed">Mixed quiz</option>
+                    <option value="multiple_choice">Multiple choice</option>
+                    <option value="true_false">True/false</option>
+                    <option value="short_answer">Short answer</option>
+                    <option value="fill_blank">Fill in the blank</option>
+                </select>
+            </label>
+            <label>Number of questions <input name="question_count" type="number" min="1" max="30" value="8"></label>
+            <button class="button primary" type="submit">Create Quiz</button>
+        </form>
+    </article>
+
+    <article class="card">
+        <div class="section-title"><p class="eyebrow">Saved</p><h2>Recent Quizzes</h2></div>
+        <ul class="compact-list">
+            {% for quiz in quizzes %}
+                <li><a href="{{ url_for('quiz_detail', quiz_id=quiz.id) }}">{{ quiz.title }}</a><span>{{ quiz.difficulty }} · {{ quiz.question_type }}</span></li>
+            {% else %}
+                <li>No quizzes generated yet<span>Use a source file</span></li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+{% endblock %}
